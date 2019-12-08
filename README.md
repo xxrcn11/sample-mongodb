@@ -60,20 +60,20 @@
 # MongoDB Version
 # command: mongod --version
 **db version v4.2.1**
-git version: edf6d45851c0b9ee15548f0f847df141764a317e
-OpenSSL version: OpenSSL 1.1.1  11 Sep 2018
-allocator: tcmalloc
-modules: none
-build environment:
-    distmod: ubuntu1804
-    distarch: x86_64
-    target_arch: x86_64
+- git version: edf6d45851c0b9ee15548f0f847df141764a317e
+- OpenSSL version: OpenSSL 1.1.1  11 Sep 2018
+- allocator: tcmalloc
+- modules: none
+- build environment:
+-     distmod: ubuntu1804
+-     distarch: x86_64
+-     target_arch: x86_64
     
     
 
 # SpringBoot MongoDB CRUD Example
 
-Spring Data MongoRepository를 이용한 방식과 MongoTemplate를 이용한 2가지의 방식에 대해 설명한다.
+**Spring Data MongoRepository**를 이용한 방식과 **MongoTemplate**를 이용한 2가지의 방식에 대해 설명한다.
 동일한 CRUD에 대해 각각의 방식으로 구현한다.
 
 
