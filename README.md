@@ -71,7 +71,7 @@
 
 # SpringBoot MongoDB CRUD Example
 
-Spring Data MongoRepository를 이용한 방식과 MongoTemplate를 이용한 2가지의 방식에 대해 설명한다.
+**Spring Data MongoRepository**를 이용한 방식과 **MongoTemplate**를 이용한 2가지의 방식에 대해 설명한다.
 동일한 CRUD에 대해 각각의 방식으로 구현한다.
 
 
