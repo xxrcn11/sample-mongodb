@@ -77,4 +77,15 @@ public class TemplateEmployeeController {
 		return empNo;
 	} 
 	
+	// select .. from Employee where ename >= 'ALLEN' and ename < 'SCOTT'
+	@GetMapping(value = "/ename/{ename1}-{ename2}")
+	public List<Employee> findEmployeeByEname(@PathVariable String ename1, @PathVariable String ename2) {
+		log.info("ename1={}, ename2={}", ename1, ename2);
+		Query query = new Query();
+		query.addCriteria(Criteria.where("eName").gte(ename1).lt(ename2).
+				and("sal").gte(5000));
+		
+		return mongoTemplate.find(query, Employee.class);
+	}
+	
 }

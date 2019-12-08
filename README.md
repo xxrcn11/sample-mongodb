@@ -3,7 +3,7 @@
  - https://lishman.io/spring-data-mongotemplate-queries
  - https://www.baeldung.com/queries-in-spring-data-mongodb
  - https://www.devglan.com/spring-boot/spring-boot-mongodb-configuration
-
+- https://www.devglan.com/spring-boot/spring-data-mongodb-queries
 
 # online README.md editor
  - https://stackedit.io/app#
@@ -40,20 +40,22 @@
 
 
 # Sample Data
-> db.employees.insert({empno:7369 , ename : "SMITH", job : "CLERK", manager : "FORD", hiredate : "17-12-1980", sal : 800, deptno : 20 }) 
-> db.employees.insert({empno:7499 , ename : "ALLEN", job : "SALESMAN", manager : "BLAKE", hiredate : "20-02-1981", sal :1600, comm : 300, deptno : 30 })
-> db.employees.insert({empno:7521 , ename : "WARD", job : "SALESMAN", manager : "BLAKE", hiredate : "22-02-1981", sal : 1250, comm : 500, deptno : 30 })
-> db.employees.insert({empno:7566 , ename : "JONES", job : "MANAGER", manager : "KING", hiredate : "02-04-1981", sal : 2975, deptno : 20 })
-> db.employees.insert({empno:7654 , ename : "MARTIN", job : "SALESMAN", manager : "BLAKE", hiredate : "28-09-1981", sal : 1250, comm : 1400, deptno : 30 })
-> db.employees.insert({empno:7698 , ename : "BLAKE", job : "MANAGER", manager : "KING", hiredate : "01-05-1981", sal : 2850, deptno : 30 })
-> db.employees.insert({empno:7782 , ename : "CLARK", job : "MANAGER", manager : "KING", hiredate : "09-06-1981", sal : 2450, deptno : 10 })
-> db.employees.insert({empno:7788 , ename : "SCOTT", job : "ANALYST", manager : "JONES", hiredate : "13-06-1987", sal : 3000, deptno : 20 })
-> db.employees.insert({empno:7839 , ename : "KING", job : "CEO", manager : "", hiredate : "17-11-1981", sal : 5000, deptno : 10 })
-> db.employees.insert({empno:7844 , ename : "TURNER", job : "SALESMAN", manager : "BLAKE", hiredate : "08-09-1981", sal : 1500, deptno : 30 }) 
-> db.employees.insert({empno:7876 , ename : "ADAMS", job : "CLERK", manager : "SCOTT", hiredate : "13-06-1987", sal : 1100, deptno : 20 })
-> db.employees.insert({empno:7900 , ename : "JAMES", job : "CLERK", manager : "BLAKE", hiredate : "03-12-1981", sal : 950, deptno : 30 })
-> db.employees.insert({empno:7902 , ename : "FORD", job : "ANALYST", manager : "JONES", hiredate : "03-12-1981", sal : 3000, deptno : 20 })
-> db.employees.insert({empno:7934 , ename : "CLERK", job : "CLERK", manager : "KING", hiredate : "23-01-1982", sal : 1300, deptno : 10 })
+> db.Employee.drop()
+> db.Employee.insert({empNo:7369 , eName : "SMITH", job : "CLERK", manager : "FORD", hiredate : "17-12-1980", sal : 800, deptNo : 20 }) 
+> db.Employee.insert({empNo:7499 , eName : "ALLEN", job : "SALESMAN", manager : "BLAKE", hiredate : "20-02-1981", sal :1600, comm : 300, deptNo : 30 })
+> db.Employee.insert({empNo:7521 , eName : "WARD", job : "SALESMAN", manager : "BLAKE", hiredate : "22-02-1981", sal : 1250, comm : 500, deptNo : 30 })
+> db.Employee.insert({empNo:7566 , eName : "JONES", job : "MANAGER", manager : "KING", hiredate : "02-04-1981", sal : 2975, deptNo : 20 })
+> db.Employee.insert({empNo:7654 , eName : "MARTIN", job : "SALESMAN", manager : "BLAKE", hiredate : "28-09-1981", sal : 1250, comm : 1400, deptNo : 30 })
+> db.Employee.insert({empNo:7698 , eName : "BLAKE", job : "MANAGER", manager : "KING", hiredate : "01-05-1981", sal : 2850, deptNo : 30 })
+> db.Employee.insert({empNo:7782 , eName : "CLARK", job : "MANAGER", manager : "KING", hiredate : "09-06-1981", sal : 2450, deptNo : 10 })
+> db.Employee.insert({empNo:7788 , eName : "SCOTT", job : "ANALYST", manager : "JONES", hiredate : "13-06-1987", sal : 3000, deptNo : 20 })
+> db.Employee.insert({empNo:7839 , eName : "KING", job : "CEO", manager : "", hiredate : "17-11-1981", sal : 5000, deptNo : 10 })
+> db.Employee.insert({empNo:7844 , eName : "TURNER", job : "SALESMAN", manager : "BLAKE", hiredate : "08-09-1981", sal : 1500, deptNo : 30 }) 
+> db.Employee.insert({empNo:7876 , eName : "ADAMS", job : "CLERK", manager : "SCOTT", hiredate : "13-06-1987", sal : 1100, deptNo : 20 })
+> db.Employee.insert({empNo:7900 , eName : "JAMES", job : "CLERK", manager : "BLAKE", hiredate : "03-12-1981", sal : 950, deptNo : 30 })
+> db.Employee.insert({empNo:7902 , eName : "FORD", job : "ANALYST", manager : "JONES", hiredate : "03-12-1981", sal : 3000, deptNo : 20 })
+> db.Employee.insert({empNo:7934 , eName : "CLERK", job : "CLERK", manager : "KING", hiredate : "23-01-1982", sal : 1300, deptNo : 10 })
+> db.Employee.find()
 
 # MongoDB Version
 # command: mongod --version
