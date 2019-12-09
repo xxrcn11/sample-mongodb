@@ -88,4 +88,17 @@ public class TemplateEmployeeController {
 		return mongoTemplate.find(query, Employee.class);
 	}
 	
+	// select .. from Employee where empno=7782 or empno=7844
+	@GetMapping(value = "/empno/{empno1}/{empno2}")
+	public List<Employee> findEmployeeByEmpNo(@PathVariable int empno1, @PathVariable int empno2) {
+		log.info("empno1={}, empno2={}", empno1, empno2);
+		Query query = new Query();
+		query.addCriteria( new Criteria().orOperator(
+				Criteria.where("empNo").is(empno1), Criteria.where("empNo").is(empno2) 
+			) 
+		);
+		
+		return mongoTemplate.find(query, Employee.class);
+	}
+	
 }
