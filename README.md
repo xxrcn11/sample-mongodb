@@ -77,7 +77,26 @@
 동일한 CRUD에 대해 각각의 방식으로 구현한다.
 
 
+#  OR Operation
+## mongoTemplate style
+> query.addCriteria( new Criteria().orOperator(
+				Criteria.where("empNo").is(empno1), Criteria.where("empNo").is(empno2) ) 
+		);
 
+
+## @Query style
+> @Query("{$or: [{empNo:?0}, {empNo:?1}]}")
+	List<Employee> findEmployeeByEmpNoOrEmpNo(int empNo1, int empNo2);
+
+
+# $gt and $lte
+
+
+## mongoTemplate style
+> query.addCriteria( new Criteria().where("sal").gt(minSal).lte(maxSal) );
+
+## @Query style
+> @Query("{sal: {$gt: ?0, $lte: ?1}}")
 
 
 

@@ -101,4 +101,15 @@ public class TemplateEmployeeController {
 		return mongoTemplate.find(query, Employee.class);
 	}
 	
+	
+	// select .. from Employee where sal >1200 and  sal <= 8000
+	@GetMapping(value = "/sal/{minSal}/{maxSal}")
+	public List<Employee> findEmployeeBySalRange(@PathVariable int minSal, @PathVariable int maxSal) {
+		log.info("minSal={}, maxSal={}", minSal, maxSal);
+		Query query = new Query();
+		query.addCriteria( new Criteria().where("sal").gt(minSal).lte(maxSal) );
+		
+		return mongoTemplate.find(query, Employee.class);
+	}
+	
 }

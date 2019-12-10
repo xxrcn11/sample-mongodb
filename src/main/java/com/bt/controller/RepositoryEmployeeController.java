@@ -3,6 +3,8 @@ package com.bt.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,7 +22,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RestController
 @RequestMapping(value = "/r")
-public class EmployeeController {
+public class RepositoryEmployeeController {
 
 	@Autowired
 	private EmployeeRepository employeeRepository;
@@ -64,6 +66,19 @@ public class EmployeeController {
 		return empNo;
 	}
 	
+	// select .. from Employee where empno=7782 or empno=7844
+	@GetMapping(value = "/empno/{empno1}/{empno2}")
+	public List<Employee> findEmployeeByEmpNo(@PathVariable int empno1, @PathVariable int empno2) {
+		log.info("empno1={}, empno2={}", empno1, empno2);
+		
+		return employeeRepository.findEmployeeByEmpNoOrEmpNo(empno1, empno2);
+	}
 	
-	
+	// select .. from Employee where empno=7782 or empno=7844
+	@GetMapping(value = "/sal/{minSal}/{maxSal}")
+	public List<Employee> findEmployeeBySalRange(@PathVariable int minSal, @PathVariable int maxSal) {
+		log.info("minSal={}, maxSal={}", minSal, maxSal);
+		
+		return employeeRepository.findEmployeeBySalRange(minSal, maxSal);
+	}
 }
