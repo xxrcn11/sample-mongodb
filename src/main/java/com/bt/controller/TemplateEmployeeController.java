@@ -107,9 +107,27 @@ public class TemplateEmployeeController {
 	public List<Employee> findEmployeeBySalRange(@PathVariable int minSal, @PathVariable int maxSal) {
 		log.info("minSal={}, maxSal={}", minSal, maxSal);
 		Query query = new Query();
-		query.addCriteria( new Criteria().where("sal").gt(minSal).lte(maxSal) );
+		query.addCriteria( Criteria.where("sal").gt(minSal).lte(maxSal) );
 		
 		return mongoTemplate.find(query, Employee.class);
+	}
+	
+	// select count(*) from Employee
+	@GetMapping(value = "/count")
+	public long countEmployee() {
+		return mongoTemplate.count(new Query(), "Employee");
+//		return mongoTemplate.count(new Query(), Employee.class);
+	}
+	
+	// select count(*) from Employee where sal >1200 and  sal <= 8000
+	@GetMapping(value = "/count/sal/{minSal}/{maxSal}")
+	public long countEmployeeBySalRange(@PathVariable int minSal, @PathVariable int maxSal) {
+		log.info("minSal={}, maxSal={}", minSal, maxSal);
+		Query query = new Query();
+		query.addCriteria( Criteria.where("sal").gt(minSal).lte(maxSal) );
+		
+		return mongoTemplate.count(query, "Employee");
+//			return mongoTemplate.count(new Query(), Employee.class);
 	}
 	
 }

@@ -3,7 +3,7 @@
  - https://lishman.io/spring-data-mongotemplate-queries
  - https://www.baeldung.com/queries-in-spring-data-mongodb
  - https://www.devglan.com/spring-boot/spring-boot-mongodb-configuration
-- https://www.devglan.com/spring-boot/spring-data-mongodb-queries
+ - https://www.devglan.com/spring-boot/spring-data-mongodb-queries
 
 # online README.md editor
  - https://stackedit.io/app#
@@ -78,6 +78,7 @@
 
 
 #  OR Operation
+- select .. from Employee where empno=7782 or empno=7844
 ## mongoTemplate style
 > query.addCriteria( new Criteria().orOperator(
 				Criteria.where("empNo").is(empno1), Criteria.where("empNo").is(empno2) ) 
@@ -90,15 +91,34 @@
 
 
 # $gt and $lte
-
-
+- select .. from Employee where sal > 1000 and sal <= 8000
 ## mongoTemplate style
-> query.addCriteria( new Criteria().where("sal").gt(minSal).lte(maxSal) );
+> query.addCriteria( Criteria.where("sal").gt(minSal).lte(maxSal) );
 
 ## @Query style
 > @Query("{sal: {$gt: ?0, $lte: ?1}}")
 
 
+# count
+- select count(*) from Employee
+## mongoTemplate style
+> mongoTemplate.count(new Query(), "Employee");
+  mongoTemplate.count(new Query(), Employee.class);
+
+## @Query style
+> @Query(value = "{}", count = true)
+
+# count with where
+- select count(*) from Employee where sal >1200 and  sal <= 8000
+## mongoTemplate style
+> Query query = new Query();
+  query.addCriteria( Criteria.where("sal").gt(minSal).lte(maxSal) );
+  mongoTemplate.count(query, "Employee");
+  mongoTemplate.count(new Query(), Employee.class);
+
+## @Query style
+> @Query(value = "{sal: {$gt: ?0, $lte: ?1}}", count = true)
+  long countEmployeeBySalRange(int minSal, int maxSal);
 
 
 
@@ -113,9 +133,3 @@
 
 
 
-
-
-
-
-
-    # sample-mongodb

@@ -20,7 +20,17 @@ public interface EmployeeRepository extends MongoRepository<Employee, String> {
 	@Query("{$or: [{empNo:?0}, {empNo:?1}]}")
 	List<Employee> findEmployeeByEmpNoOrEmpNo(int empNo1, int empNo2);
 	
-
+	// select .. from Employee where sal > 1000 and sal <= 8000
 	@Query("{sal: {$gt: ?0, $lte: ?1}}")
 	List<Employee> findEmployeeBySalRange(int minSal, int maxSal);
+	
+	
+	// select count(*) from Employee;
+	@Query(value = "{}", count = true)
+	long countEmployee();
+	
+	
+	// select count(*) from Employee where sal >1200 and  sal <= 8000
+	@Query(value = "{sal: {$gt: ?0, $lte: ?1}}", count = true)
+	long countEmployeeBySalRange(int minSal, int maxSal);
 }

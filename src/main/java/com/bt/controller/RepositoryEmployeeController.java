@@ -3,8 +3,6 @@ package com.bt.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -80,5 +78,18 @@ public class RepositoryEmployeeController {
 		log.info("minSal={}, maxSal={}", minSal, maxSal);
 		
 		return employeeRepository.findEmployeeBySalRange(minSal, maxSal);
+	}
+	
+	// select count(*) from Employee
+	@GetMapping(value = "/count")
+	public long countEmployee() {
+		return employeeRepository.countEmployee();
+	}
+	
+	// select count(*) from Employee
+	@GetMapping(value = "/count/sal/{minSal}/{maxSal}")
+	public long countEmployeeBySalRange(@PathVariable int minSal, @PathVariable int maxSal) {
+		log.info("minSal={}, maxSal={}", minSal, maxSal);
+		return employeeRepository.countEmployeeBySalRange(minSal, maxSal);
 	}
 }
