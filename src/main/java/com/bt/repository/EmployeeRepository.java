@@ -33,4 +33,15 @@ public interface EmployeeRepository extends MongoRepository<Employee, String> {
 	// select count(*) from Employee where sal >1200 and  sal <= 8000
 	@Query(value = "{sal: {$gt: ?0, $lte: ?1}}", count = true)
 	long countEmployeeBySalRange(int minSal, int maxSal);
+	
+	
+	
+	// select empNo, eName, sal from Employee where deptNo = 20 order by sal desc
+	@Query(value = "{deptNo: ?0}", fields = "{empNo:1, eName:1}" )
+	List<Employee> findSortAndSelectFields(int deptNo);
+	
+	
+	// select empNo, eName, sal from Employee where deptNo = 20 order by sal desc
+	@Query(value = "{deptNo: ?0}", fields = "{eName:1, _id:0}" )
+	List<String> findSortAndSelectOneField(int deptNo);
 }

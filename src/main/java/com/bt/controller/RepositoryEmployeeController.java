@@ -3,6 +3,10 @@ package com.bt.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -92,4 +96,22 @@ public class RepositoryEmployeeController {
 		log.info("minSal={}, maxSal={}", minSal, maxSal);
 		return employeeRepository.countEmployeeBySalRange(minSal, maxSal);
 	}
+	
+	@GetMapping(value = "/sort/{deptNo}")
+	public List<Employee> findsort(@PathVariable int deptNo) {
+		log.info("deptNo={}", deptNo);
+		
+		return employeeRepository.findSortAndSelectFields(deptNo);
+		
+	} 
+	
+	@GetMapping(value = "/sort1/{deptNo}")
+	public List<String> findSortAndSelectOneField(@PathVariable int deptNo) {
+		log.info("deptNo={}", deptNo);
+		List<String> aaa = employeeRepository.findSortAndSelectOneField(deptNo);
+		log.info("aa={}", aaa);
+		return employeeRepository.findSortAndSelectOneField(deptNo);
+		
+	} 
+	
 }

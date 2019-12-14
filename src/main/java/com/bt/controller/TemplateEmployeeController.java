@@ -3,6 +3,8 @@ package com.bt.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -129,5 +131,43 @@ public class TemplateEmployeeController {
 		return mongoTemplate.count(query, "Employee");
 //			return mongoTemplate.count(new Query(), Employee.class);
 	}
+	
+	// select distinct deptno from Employee
+	@GetMapping(value = "/distinct")
+	public List<String> distinct() {
+		Query query = new Query();
+		
+		return mongoTemplate.findDistinct(query, "job", Employee.class, String.class);
+	}
+	
+	// select distinct deptno from Employee where sal > 3000
+	@GetMapping(value = "/distinct/{minSal}")
+	public List<Integer> distinctWithCondition(@PathVariable int minSal) {
+		Query query = new Query();
+		query.addCriteria( Criteria.where("sal").gt(minSal) );
+		return mongoTemplate.findDistinct(query, "deptNo", Employee.class, Integer.class);
+	}
+	
+	
+	
+	// select empNo, eName, sal from Employee where deptNo = 20 order by sal desc
+	@GetMapping(value = "/sort/{deptNo}")
+	public List<Employee> findsort(@PathVariable int deptNo) {
+		log.info("deptNo={}", deptNo);
+		
+		
+		Query query = new Query();
+		query.addCriteria(Criteria.where("deptNo").is(deptNo));
+		query.with(Sort.by(Direction.DESC, "sal"));
+
+		query.fields().include("empNo");
+		query.fields().include("eName");		
+		
+		return mongoTemplate.find(query, Employee.class);
+		
+	} 
+	
+	
+	
 	
 }

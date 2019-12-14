@@ -122,12 +122,38 @@
 
 
 
+# distinct with where
+- select distinct deptno from Employee where sal > 3000
+
+## mongoTemplate style
+> 	Query query = new Query();
+	query.addCriteria( Criteria.where("sal").gt(minSal) );
+	return mongoTemplate.findDistinct(query, "deptNo", Employee.class, Integer.class);
+
+## @Query style
+> 못 찾음
 
 
+# select field and sort
+- select empNo, eName, sal from Employee where deptNo = 20 order by sal desc
 
+## mongoTemplate style
+> 	Query query = new Query();
+	query.addCriteria(Criteria.where("deptNo").is(deptNo));
+	query.with(Sort.by(Direction.DESC, "sal"));
 
+	query.fields().include("empNo");
+	query.fields().include("eName");		
+	return mongoTemplate.find(query, Employee.class);
 
+## @Query style
+> @Query(value = "{deptNo: ?0}", fields = "{empNo:1, eName:1}" )
+	List<Employee> findSortAndSelectFields(int deptNo);
 
+> @Query(value = "{deptNo: ?0}", fields = "{eName:1, _id:0}" )
+	List<String> findSortAndSelectOneField(int deptNo);	
+- 1개의 필드만 리턴하게 되면 List<String>일거라 예상했지만 실제로는 fieldName:fieldValue형태로 리턴된다
+- ex) [{"eName": "ALLEN"}, {"eName": "WARD"}, {"eName": "MARTIN"}, {"eName": "BLAKE"}, {"eName": "TURNER"}, {"eName": "JAMES"}]
 
 
 
