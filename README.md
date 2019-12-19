@@ -156,6 +156,153 @@
 - ex) [{"eName": "ALLEN"}, {"eName": "WARD"}, {"eName": "MARTIN"}, {"eName": "BLAKE"}, {"eName": "TURNER"}, {"eName": "JAMES"}]
 
 
+# select field where in
+- select empNo, eName, sal from Employee where deptNo in (10, 30)
+
+## mongoTemplate style
+> 	public List<Employee> findIn(@PathVariable int deptNo1, @PathVariable int deptNo2) {
+		log.info("deptNo1={}, deptNo2={}", deptNo1, deptNo2);
+		
+		
+		Query query = new Query();
+		query.addCriteria(Criteria.where("deptNo").in(deptNo1, deptNo2));
+
+		query.fields().include("empNo");
+		query.fields().include("eName");		
+		query.fields().include("sal");
+		
+		return mongoTemplate.find(query, Employee.class);
+	}
+
+> [
+    {
+        "id": "5dec9ea325f36898b9626fdd",
+        "empNo": 7499,
+        "eName": "ALLEN",
+        "job": null,
+        "manager": null,
+        "hiredate": null,
+        "sal": 1600,
+        "deptNo": 0,
+        "comm": 0
+    },
+    {
+        "id": "5dec9ea325f36898b9626fde",
+        "empNo": 7521,
+        "eName": "WARD",
+        "job": null,
+        "manager": null,
+        "hiredate": null,
+        "sal": 1250,
+        "deptNo": 0,
+        "comm": 0
+    }, ... ]
+    
+## @Query style
+> @Query(value = "{deptNo: { $in:[ ?0, ?1 ] } }", fields = "{eName:1, eName:1, sal:1, _id:0}" )
+	List<Employee> findIn(int deptNo1, int deptNo2);
+
+> [
+    {
+        "id": null,
+        "empNo": 0,
+        "eName": "ALLEN",
+        "job": null,
+        "manager": null,
+        "hiredate": null,
+        "sal": 1600,
+        "deptNo": 0,
+        "comm": 0
+    },
+    {
+        "id": null,
+        "empNo": 0,
+        "eName": "WARD",
+        "job": null,
+        "manager": null,
+        "hiredate": null,
+        "sal": 1250,
+        "deptNo": 0,
+        "comm": 0
+    }, .... ]
+
+
+# select empNo, deptNo from Employee where deptNo = ? and sal > ?
+
+## mongoTemplate style
+> 	@GetMapping(value = "/and/{deptNo}/{minSal}")
+	public List<Employee> findAndCondition(@PathVariable int deptNo, @PathVariable double minSal) {
+		log.info("deptNo={}, minSal={}", deptNo, minSal);
+
+		Query query = new Query();
+		query.addCriteria(Criteria.where("deptNo").is(deptNo).and("sal").gt(minSal));
+		query.fields().include("empNo");
+		query.fields().include("deptNo");
+		query.fields().exclude("_id");
+		
+		return mongoTemplate.find(query, Employee.class);
+	}
+> [
+    {
+        "id": null,
+        "empNo": 7839,
+        "eName": null,
+        "job": null,
+        "manager": null,
+        "hiredate": null,
+        "sal": 0,
+        "deptNo": 10,
+        "comm": 0
+    }
+]	
+
+## @Query style
+> @Query(value = "{$and: [{deptNo:?0}, {sal: {$gt: ?1}}] }", fields = "{deptNo:1, empNo:1, _id:0}" )
+  List<Employee> findAndCondition(int deptNo, double minSal);
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	

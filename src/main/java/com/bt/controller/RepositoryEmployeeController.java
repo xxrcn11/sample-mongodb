@@ -3,8 +3,6 @@ package com.bt.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -114,4 +112,17 @@ public class RepositoryEmployeeController {
 		
 	} 
 	
+	// select empNo, eName, sal from Employee where deptNo in (10, 30)
+	@GetMapping(value = "/in/{deptNo1}/{deptNo2}")
+	public List<Employee> findIn(@PathVariable int deptNo1, @PathVariable int deptNo2) {
+		log.info("deptNo1={}, deptNo2={}", deptNo1, deptNo2);
+		
+		return employeeRepository.findIn(deptNo1, deptNo2);
+	}
+	
+	@GetMapping(value = "/and/{deptNo}/{minSal}")
+	public List<Employee> findAndCondition(@PathVariable int deptNo, @PathVariable double minSal) {
+		log.info("deptNo={}, minSal={}", deptNo, minSal);
+		return employeeRepository.findAndCondition(deptNo, minSal);
+	}
 }

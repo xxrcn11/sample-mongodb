@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import com.bt.vo.Employee;
 
@@ -44,4 +45,12 @@ public interface EmployeeRepository extends MongoRepository<Employee, String> {
 	// select empNo, eName, sal from Employee where deptNo = 20 order by sal desc
 	@Query(value = "{deptNo: ?0}", fields = "{eName:1, _id:0}" )
 	List<String> findSortAndSelectOneField(int deptNo);
+	
+	// select empNo, eName, sal from Employee where deptNo = 20 order by sal desc
+	@Query(value = "{deptNo: { $in:[ ?0, ?1 ] } }", fields = "{eName:1, eName:1, _id:0}" )
+	List<Employee> findIn(int deptNo1, int deptNo2);
+	
+	// select empNo, deptNo from Employee where deptNo = ? and sal > ?
+	@Query(value = "{$and: [{deptNo:?0}, {sal: {$gt: ?1}}] }", fields = "{deptNo:1, empNo:1, _id:0}" )
+	List<Employee> findAndCondition(int deptNo, double minSal);
 }

@@ -167,7 +167,37 @@ public class TemplateEmployeeController {
 		
 	} 
 	
+	// select empNo, eName, sal from Employee where deptNo in (10, 30)
+	@GetMapping(value = "/in/{deptNo1}/{deptNo2}")
+	public List<Employee> findIn(@PathVariable int deptNo1, @PathVariable int deptNo2) {
+		log.info("deptNo1={}, deptNo2={}", deptNo1, deptNo2);
+		
+		
+		Query query = new Query();
+		query.addCriteria(Criteria.where("deptNo").in(deptNo1, deptNo2));
+
+		query.fields().include("empNo");
+		query.fields().include("eName");		
+		query.fields().include("sal");
+		
+		return mongoTemplate.find(query, Employee.class);
+	}
 	
+	// select empNo, deptNo from Employee where deptNo = ? and sal > ?
+	@GetMapping(value = "/and/{deptNo}/{minSal}")
+	public List<Employee> findAndCondition(@PathVariable int deptNo, @PathVariable double minSal) {
+		log.info("deptNo={}, minSal={}", deptNo, minSal);
+		
+
+		Query query = new Query();
+		query.addCriteria(Criteria.where("deptNo").is(deptNo).and("sal").gt(minSal));
+		query.fields().include("empNo");
+		query.fields().include("deptNo");
+		query.fields().exclude("_id");
+		
+		
+		return mongoTemplate.find(query, Employee.class);
+	}
 	
 	
 }
