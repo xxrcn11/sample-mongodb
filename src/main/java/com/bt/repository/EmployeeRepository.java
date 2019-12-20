@@ -53,4 +53,9 @@ public interface EmployeeRepository extends MongoRepository<Employee, String> {
 	// select empNo, deptNo from Employee where deptNo = ? and sal > ?
 	@Query(value = "{$and: [{deptNo:?0}, {sal: {$gt: ?1}}] }", fields = "{deptNo:1, empNo:1, _id:0}" )
 	List<Employee> findAndCondition(int deptNo, double minSal);
+	
+	
+	// select empNo, deptNo from Employee where deptNo = ? and sal > ?
+	@Query(value = "{comm: {$exists:true}}", fields = "{empNo:1, comm:1, _id:0}" )
+	List<Employee> findExists();
 }

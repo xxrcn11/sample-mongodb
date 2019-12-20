@@ -265,6 +265,23 @@
 
 
 
+# select empNo, comm from Employee where comm is exists
+
+## mongoTemplate style
+> 	public List<Employee> findExists() {
+
+		Query query = new Query();
+		query.addCriteria(Criteria.where("comm").exists(true));
+		query.fields().include("empNo");
+		query.fields().include("comm");
+		query.fields().exclude("_id");
+		
+		return mongoTemplate.find(query, Employee.class);
+	}
+
+## @Query style
+> @Query(value = "{comm: {$exists:true}}", fields = "{empNo:1, comm:1, _id:0}" )
+	List<Employee> findExists();
 
 
 

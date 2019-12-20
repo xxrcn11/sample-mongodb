@@ -125,4 +125,10 @@ public class RepositoryEmployeeController {
 		log.info("deptNo={}, minSal={}", deptNo, minSal);
 		return employeeRepository.findAndCondition(deptNo, minSal);
 	}
+	
+	@GetMapping(value = "/find/exists")
+	public List<Employee> findExists() {
+		return employeeRepository.findExists();
+	}
+	
 }
