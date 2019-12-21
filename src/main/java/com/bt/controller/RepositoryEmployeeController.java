@@ -131,4 +131,33 @@ public class RepositoryEmployeeController {
 		return employeeRepository.findExists();
 	}
 	
+	
+	// select empNo, comm from Employee where comm type is double
+	@GetMapping(value = "/find/type/{fieldName}/{typeCode}")
+	public List<Employee> findType(@PathVariable String fieldName, @PathVariable int typeCode) {
+		log.info("fieldName={}, typeCode={}", fieldName, typeCode);
+		
+		return employeeRepository.findType(fieldName, typeCode);
+	}	
+	
+	
+	@GetMapping(value = "/find/regex1")
+	public List<Employee> findRegex1() {
+		return employeeRepository.regex1();
+	}
+
+	@GetMapping(value = "/find/regex2")
+	public List<Employee> findRegex2() {
+		return employeeRepository.regex2();
+	}
+
+	@GetMapping(value = "/find/regex3")
+	public List<Employee> findRegex3() {
+		return employeeRepository.regex3();
+	}
+	
+	@GetMapping(value = "/find/regex4")
+	public List<Employee> findRegex4() {
+		return employeeRepository.regex4();
+	}	
 }

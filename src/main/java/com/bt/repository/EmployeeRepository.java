@@ -58,4 +58,26 @@ public interface EmployeeRepository extends MongoRepository<Employee, String> {
 	// select empNo, deptNo from Employee where deptNo = ? and sal > ?
 	@Query(value = "{comm: {$exists:true}}", fields = "{empNo:1, comm:1, _id:0}" )
 	List<Employee> findExists();
+	
+	// select empNo, comm from Employee where comm type is double
+	@Query(value = "{comm: {$type:1}}", fields = "{empNo:1, comm:1, _id:0}" )
+	List<Employee> findType(String fieldName, int typeCode);
+	
+	// pattern : 대소문자 무시
+	@Query(value = "{eName: {$regex:'S.*H', $options: 'i'}}", fields = "{empNo:1, comm:1, _id:0}" )
+	List<Employee> regex1();
+	
+	// pattern : 대소문자 무시
+	@Query(value = "{eName: {$regex:'s.*h', $options: 'i'}}", fields = "{empNo:1, comm:1, _id:0}" )
+	List<Employee> regex2();
+	
+	
+	// pattern : 대소문자 식별
+	@Query(value = "{eName: {$regex:'S.*H', $options: 'm'}}", fields = "{empNo:1, comm:1, _id:0}" )
+	List<Employee> regex3();
+	
+	// pattern : 대소문자 식별
+	@Query(value = "{eName: {$regex:'s.*h', $options: 'm'}}", fields = "{empNo:1, comm:1, _id:0}" )
+	List<Employee> regex4();
+	
 }

@@ -262,37 +262,51 @@
 
 
 
-
-
-
 # select empNo, comm from Employee where comm is exists
 
 ## mongoTemplate style
-> 	public List<Employee> findExists() {
-
-		Query query = new Query();
-		query.addCriteria(Criteria.where("comm").exists(true));
-		query.fields().include("empNo");
-		query.fields().include("comm");
-		query.fields().exclude("_id");
-		
-		return mongoTemplate.find(query, Employee.class);
-	}
+> query.addCriteria(Criteria.where("comm").exists(true));
 
 ## @Query style
 > @Query(value = "{comm: {$exists:true}}", fields = "{empNo:1, comm:1, _id:0}" )
-	List<Employee> findExists();
 
 
 
+# field type으로 조회. 특정 field가 없는 경우에 filtering됨
+
+## mongoTemplate style
+> 	query.addCriteria(Criteria.where(fieldName).type(typeCode));
+
+## @Query style
+> @Query(value = "{comm: {$type:1}}", fields = "{empNo:1, comm:1, _id:0}" )
+
+
+#  pattern : 대소문자 무시
+## mongoTemplate style
+> query.addCriteria(Criteria.where("eName").regex("S.*H", "i" ) );
+## Query style
+> @Query(value = "{eName: {$regex:'S.*H', $options: 'i'}}", fields = "{empNo:1, comm:1, _id:0}" )
+
+
+#  pattern : 대소문자 무시
+## mongoTemplate style
+> query.addCriteria(Criteria.where("eName").regex("s.*h", "i" ) );
+## Query style
+> @Query(value = "{eName: {$regex:'s.*h', $options: 'i'}}", fields = "{empNo:1, comm:1, _id:0}" )
 
 
 
+#  pattern : 대소문자 식별
+## mongoTemplate style
+> query.addCriteria(Criteria.where("eName").regex("S.*H", "m" ) );
+## Query style
+> @Query(value = "{eName: {$regex:'S.*H', $options: 'm'}}", fields = "{empNo:1, comm:1, _id:0}" )
 
-
-
-
-
+#  pattern : 대소문자 식별
+## mongoTemplate style
+> query.addCriteria(Criteria.where("eName").regex("s.*h", "m" ) );
+## Query style
+> @Query(value = "{eName: {$regex:'s.*h', $options: 'm'}}", fields = "{empNo:1, comm:1, _id:0}" )
 
 
 

@@ -1,6 +1,7 @@
 package com.bt.controller;
 
 import java.util.List;
+import java.util.regex.Pattern;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -187,14 +188,11 @@ public class TemplateEmployeeController {
 	@GetMapping(value = "/and/{deptNo}/{minSal}")
 	public List<Employee> findAndCondition(@PathVariable int deptNo, @PathVariable double minSal) {
 		log.info("deptNo={}, minSal={}", deptNo, minSal);
-		
-
 		Query query = new Query();
 		query.addCriteria(Criteria.where("deptNo").is(deptNo).and("sal").gt(minSal));
 		query.fields().include("empNo");
 		query.fields().include("deptNo");
 		query.fields().exclude("_id");
-		
 		
 		return mongoTemplate.find(query, Employee.class);
 	}
@@ -203,10 +201,69 @@ public class TemplateEmployeeController {
 	// select empNo, comm from Employee where comm is exists
 	@GetMapping(value = "/find/exists")
 	public List<Employee> findExists() {
-		
-
 		Query query = new Query();
 		query.addCriteria(Criteria.where("comm").exists(true));
+		query.fields().include("empNo");
+		query.fields().include("comm");
+		query.fields().exclude("_id");
+		
+		return mongoTemplate.find(query, Employee.class);
+	}
+	
+	// select empNo, comm from Employee where comm type is double
+	@GetMapping(value = "/find/type/{fieldName}/{typeCode}")
+	public List<Employee> findType(@PathVariable String fieldName, @PathVariable int typeCode) {
+		log.info("fieldName={}, typeCode={}", fieldName, typeCode);
+		Query query = new Query();
+		query.addCriteria(Criteria.where(fieldName).type(typeCode));
+		query.fields().include("empNo");
+		query.fields().include("comm");
+		query.fields().exclude("_id");
+		
+		return mongoTemplate.find(query, Employee.class);
+	}
+	
+	// pattern : 대소문자 무시
+	@GetMapping(value = "/find/regex1")
+	public List<Employee> findRegex1() {
+		Query query = new Query();
+		query.addCriteria(Criteria.where("eName").regex("S.*H", "i" ) );
+		query.fields().include("empNo");
+		query.fields().include("comm");
+		query.fields().exclude("_id");
+		
+		return mongoTemplate.find(query, Employee.class);
+	}
+	
+	// pattern : 대소문자 무시
+	@GetMapping(value = "/find/regex2")
+	public List<Employee> findRegex2() {
+		Query query = new Query();
+		query.addCriteria(Criteria.where("eName").regex("s.*h", "i" ) );
+		query.fields().include("empNo");
+		query.fields().include("comm");
+		query.fields().exclude("_id");
+		
+		return mongoTemplate.find(query, Employee.class);
+	}
+	
+	// pattern : 대소문자 식별
+	@GetMapping(value = "/find/regex3")
+	public List<Employee> findRegex3() {
+		Query query = new Query();
+		query.addCriteria(Criteria.where("eName").regex("S.*H", "m" ) );
+		query.fields().include("empNo");
+		query.fields().include("comm");
+		query.fields().exclude("_id");
+		
+		return mongoTemplate.find(query, Employee.class);
+	}
+	
+	// pattern : 대소문자 식별
+	@GetMapping(value = "/find/regex4")
+	public List<Employee> findRegex4() {
+		Query query = new Query();
+		query.addCriteria(Criteria.where("eName").regex("s.*h", "m" ) );
 		query.fields().include("empNo");
 		query.fields().include("comm");
 		query.fields().exclude("_id");
