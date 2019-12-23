@@ -160,4 +160,11 @@ public class RepositoryEmployeeController {
 	public List<Employee> findRegex4() {
 		return employeeRepository.regex4();
 	}	
+	
+	
+	// insert into
+	@PostMapping(value = "/insert")
+	public Employee insertEmployee(@RequestBody Employee employee) {
+		return employeeRepository.insert(employee);
+	}
 }

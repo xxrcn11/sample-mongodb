@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 import org.springframework.stereotype.Repository;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import com.bt.vo.Employee;
 
@@ -79,5 +78,7 @@ public interface EmployeeRepository extends MongoRepository<Employee, String> {
 	// pattern : 대소문자 식별
 	@Query(value = "{eName: {$regex:'s.*h', $options: 'm'}}", fields = "{empNo:1, comm:1, _id:0}" )
 	List<Employee> regex4();
+
+	Employee insert(Employee employee);
 	
 }

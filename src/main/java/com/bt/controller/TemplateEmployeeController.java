@@ -1,13 +1,11 @@
 package com.bt.controller;
 
 import java.util.List;
-import java.util.regex.Pattern;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
@@ -269,6 +267,12 @@ public class TemplateEmployeeController {
 		query.fields().exclude("_id");
 		
 		return mongoTemplate.find(query, Employee.class);
+	}
+	
+	// insert into
+	@PostMapping(value = "/insert")
+	public Employee insertEmployee(@RequestBody Employee employee) {
+		return mongoTemplate.insert(employee, "Employee");
 	}
 	
 }
