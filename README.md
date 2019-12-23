@@ -308,6 +308,12 @@
 ## Query style
 > @Query(value = "{eName: {$regex:'s.*h', $options: 'm'}}", fields = "{empNo:1, comm:1, _id:0}" )
 
+#  insert into Employee
+## mongoTemplate style
+> mongoTemplate.insert(employee, "Employee");
+## Query style
+> Employee insert(Employee employee);
+
 
 
 
