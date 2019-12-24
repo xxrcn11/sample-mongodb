@@ -80,5 +80,9 @@ public interface EmployeeRepository extends MongoRepository<Employee, String> {
 	List<Employee> regex4();
 
 	Employee insert(Employee employee);
+
+	
+	@Query(value = "{empNo: {$ne: 7793}}" )
+	List<Employee> notEquals(int empNo);
 	
 }

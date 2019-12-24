@@ -87,7 +87,6 @@
 
 ## @Query style
 > @Query("{$or: [{empNo:?0}, {empNo:?1}]}")
-	List<Employee> findEmployeeByEmpNoOrEmpNo(int empNo1, int empNo2);
 
 
 # $gt and $lte
@@ -111,10 +110,8 @@
 # count with where
 - select count(*) from Employee where sal >1200 and  sal <= 8000
 ## mongoTemplate style
-> Query query = new Query();
   query.addCriteria( Criteria.where("sal").gt(minSal).lte(maxSal) );
   mongoTemplate.count(query, "Employee");
-  mongoTemplate.count(new Query(), Employee.class);
 
 ## @Query style
 > @Query(value = "{sal: {$gt: ?0, $lte: ?1}}", count = true)
@@ -138,10 +135,8 @@
 - select empNo, eName, sal from Employee where deptNo = 20 order by sal desc
 
 ## mongoTemplate style
-> 	Query query = new Query();
 	query.addCriteria(Criteria.where("deptNo").is(deptNo));
 	query.with(Sort.by(Direction.DESC, "sal"));
-
 	query.fields().include("empNo");
 	query.fields().include("eName");		
 	return mongoTemplate.find(query, Employee.class);
@@ -315,7 +310,12 @@
 > Employee insert(Employee employee);
 
 
-
+#  select * from Employee empNo != 7783
+## mongoTemplate style
+> query.addCriteria(Criteria.where("empNo").ne(empNo) );
+  return mongoTemplate.find(query, Employee.class);
+## Query style
+> @Query(value = "{empNo: {$ne: 7793}}" )
 
 
 

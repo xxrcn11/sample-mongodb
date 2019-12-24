@@ -275,4 +275,12 @@ public class TemplateEmployeeController {
 		return mongoTemplate.insert(employee, "Employee");
 	}
 	
+	// select * from where empNo != 88932
+	@GetMapping(value = "/not/{empNo}")
+	public List<Employee> notEquals(@PathVariable int empNo) {
+		Query query = new Query();
+		query.addCriteria(Criteria.where("empNo").ne(empNo) );
+		return mongoTemplate.find(query, Employee.class);
+	}
+	
 }

@@ -167,4 +167,10 @@ public class RepositoryEmployeeController {
 	public Employee insertEmployee(@RequestBody Employee employee) {
 		return employeeRepository.insert(employee);
 	}
+	
+	// select * from where empNo != 88932
+	@GetMapping(value = "/not/{empNo}")
+	public List<Employee> notEquals(@PathVariable int empNo) {
+		return employeeRepository.notEquals(empNo);
+	}	
 }
