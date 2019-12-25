@@ -283,4 +283,24 @@ public class TemplateEmployeeController {
 		return mongoTemplate.find(query, Employee.class);
 	}
 	
+	// select .. from Employee where deptNo=10 or sal >= 3000
+	@GetMapping(value = "/or/{deptNo}/{sal}")
+	public List<Employee> findByEmpNoAndDeptNo(@PathVariable int deptNo, @PathVariable int sal) {
+		log.info("deptNo={}, sal={}", deptNo, sal);
+		Query query = new Query();
+		query.addCriteria( new Criteria().orOperator(
+				Criteria.where("deptNo").is(deptNo), Criteria.where("sal").gte(sal) )); 
+		
+		return mongoTemplate.find(query, Employee.class);
+	}	
+	
+	
+	// select .. from Employee where hiredate like '%1999%'
+	@GetMapping(value = "/like/{year}")
+	public List<Employee> findLikeByHireDate(@PathVariable int year) {
+		log.info("year={}", year);
+		Query query = new Query();
+		query.addCriteria( Criteria.where("hiredate").regex(".*1999"));
+		return mongoTemplate.find(query, Employee.class);
+	}
 }

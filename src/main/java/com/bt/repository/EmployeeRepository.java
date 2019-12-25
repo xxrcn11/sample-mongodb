@@ -84,5 +84,14 @@ public interface EmployeeRepository extends MongoRepository<Employee, String> {
 	
 	@Query(value = "{empNo: {$ne: 7793}}" )
 	List<Employee> notEquals(int empNo);
+
+	@Query("{$or: [{deptNo:?0}, {sal: {$gte: ?1}}  ]}")
+	List<Employee> findByDeptNoOrSal(int deptNo, int sal);
+
+	@Query("{hiredate: {$regex: '.*?0'}}")
+	List<Employee> findLikeByHireDate(int year);
+	
+	
+	
 	
 }

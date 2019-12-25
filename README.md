@@ -83,10 +83,21 @@
 > query.addCriteria( new Criteria().orOperator(
 				Criteria.where("empNo").is(empno1), Criteria.where("empNo").is(empno2) ) 
 		);
-
-
 ## @Query style
 > @Query("{$or: [{empNo:?0}, {empNo:?1}]}")
+
+
+# select .. from Employee where deptNo=10 or sal >= 3000
+## mongoTemplate style
+> query.addCriteria( new Criteria().orOperator(Criteria.where("deptNo").is(deptNo), Criteria.where("sal").gte(sal) ));  
+> Sending command '{"find": "Employee", "filter": {"$or": [{"deptNo": 20}, {"sal": {"$gte": 3000}}]}, "$db": "test"}'
+
+## @Query style
+> @Query("{$or: [{deptNo:?0}, {sal: {$gte: ?1}}  ]}")
+
+
+
+
 
 
 # $gt and $lte
@@ -319,6 +330,12 @@
 
 
 
+#  select .. from Employee where hiredate like '%1999%'
+## mongoTemplate style
+> query.addCriteria( Criteria.where("hiredate").regex(".*1999"));
+> Sending command '{"find": "Employee", "filter": {"hiredate": {"$regex": ".*1999"}}, "$db": "test"}'
+## Query style
+> @Query("{hiredate: {$regex: '.*?0'}}")
 
 
 

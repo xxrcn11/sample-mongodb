@@ -98,7 +98,6 @@ public class RepositoryEmployeeController {
 	@GetMapping(value = "/sort/{deptNo}")
 	public List<Employee> findsort(@PathVariable int deptNo) {
 		log.info("deptNo={}", deptNo);
-		
 		return employeeRepository.findSortAndSelectFields(deptNo);
 		
 	} 
@@ -173,4 +172,32 @@ public class RepositoryEmployeeController {
 	public List<Employee> notEquals(@PathVariable int empNo) {
 		return employeeRepository.notEquals(empNo);
 	}	
+	
+	// select .. from Employee where deptNo=10 or sal >= 3000
+	@GetMapping(value = "/or/{deptNo}/{sal}")
+	public List<Employee> findByEmpNoAndDeptNo(@PathVariable int deptNo, @PathVariable int sal) {
+		
+		return employeeRepository.findByDeptNoOrSal(deptNo, sal);
+	}	
+
+	
+	// select .. from Employee where hiredate like '%1999%'
+	@GetMapping(value = "/like/{year}")
+	public List<Employee> findLikeByHireDate(@PathVariable int year) {
+		return employeeRepository.findLikeByHireDate(year);
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }
