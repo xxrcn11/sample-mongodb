@@ -303,4 +303,13 @@ public class TemplateEmployeeController {
 		query.addCriteria( Criteria.where("hiredate").regex(".*1999"));
 		return mongoTemplate.find(query, Employee.class);
 	}
+	
+	// select .. from Employee where hiredate like '19%'
+	@GetMapping(value = "/like/head/{year}")
+	public List<Employee> findLikeByHireDateHead(@PathVariable int year) {
+		log.info("year={}", year);
+		Query query = new Query();
+		query.addCriteria( Criteria.where("hiredate").regex(year + ".*"));
+		return mongoTemplate.find(query, Employee.class);
+	}
 }

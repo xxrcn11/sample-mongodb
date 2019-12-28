@@ -339,8 +339,12 @@
 
 
 
-
-
+#  select .. from Employee where hiredate like '%1999%'
+## mongoTemplate style
+> query.addCriteria( Criteria.where("hiredate").regex(year + ".*"));
+> Sending command '{"find": "Employee", "filter": {"hiredate": {"$regex": "19.*"}}, "$db": "test"}'
+## Query style
+> @Query("{hiredate: {$regex: '?0.*'}}")
 
 
 

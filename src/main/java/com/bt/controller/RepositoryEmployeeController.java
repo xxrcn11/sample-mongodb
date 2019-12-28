@@ -187,7 +187,11 @@ public class RepositoryEmployeeController {
 		return employeeRepository.findLikeByHireDate(year);
 	}
 	
-	
+	// select .. from Employee where hiredate like '19%'
+	@GetMapping(value = "/like/head/{year}")
+	public List<Employee> findLikeByHireDateHead(@PathVariable int year) {
+		return employeeRepository.findLikeByHireDateHead(year);
+	}
 	
 	
 	

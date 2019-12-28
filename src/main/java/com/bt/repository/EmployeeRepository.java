@@ -89,7 +89,10 @@ public interface EmployeeRepository extends MongoRepository<Employee, String> {
 	List<Employee> findByDeptNoOrSal(int deptNo, int sal);
 
 	@Query("{hiredate: {$regex: '.*?0'}}")
+	
 	List<Employee> findLikeByHireDate(int year);
+	@Query("{hiredate: {$regex: '?0.*'}}")
+	List<Employee> findLikeByHireDateHead(int year);
 	
 	
 	
