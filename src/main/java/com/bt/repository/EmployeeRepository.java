@@ -37,8 +37,12 @@ public interface EmployeeRepository extends MongoRepository<Employee, String> {
 	
 	
 	// select empNo, eName, sal from Employee where deptNo = 20 order by sal desc
-	@Query(value = "{deptNo: ?0}", fields = "{empNo:1, eName:1}" )
-	List<Employee> findSortAndSelectFields(int deptNo);
+	@Query(value = "{deptNo: ?0}", sort = "{sal: -1}", fields = "{empNo:1, eName:1, sal:1}" )
+	List<Employee> findSortDesc(int deptNo);
+	
+	// select empNo, eName, sal from Employee where deptNo = 20 order by sal asc
+	@Query(value = "{deptNo: ?0}", sort = "{sal: 1}", fields = "{empNo:1, eName:1, sal:1}" )
+	List<Employee> findSortAsc(int deptNo);
 	
 	
 	// select empNo, eName, sal from Employee where deptNo = 20 order by sal desc
@@ -89,10 +93,18 @@ public interface EmployeeRepository extends MongoRepository<Employee, String> {
 	List<Employee> findByDeptNoOrSal(int deptNo, int sal);
 
 	@Query("{hiredate: {$regex: '.*?0'}}")
-	
 	List<Employee> findLikeByHireDate(int year);
+	
 	@Query("{hiredate: {$regex: '?0.*'}}")
 	List<Employee> findLikeByHireDateHead(int year);
+
+	
+	// Sending command '{"find": "Employee", "filter": {"deptNo": 30}, "limit": 1, "$db": "test"}'
+//	Employee findFirstByDeptNo(int deptNo); // findEmployeeOne
+	List<Employee> findAll(); // findEmployeeOne
+
+	// Sending command '{"find": "Employee", "filter": {"deptNo": 30}, "limit": 5, "$db": "test"}'
+	List<Employee> findFirst5ByDeptNo(int deptNo);
 	
 	
 	

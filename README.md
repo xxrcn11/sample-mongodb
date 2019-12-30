@@ -142,24 +142,38 @@
 > 못 찾음
 
 
-# select field and sort
+# select field, sort desc / asc
 - select empNo, eName, sal from Employee where deptNo = 20 order by sal desc
 
 ## mongoTemplate style
-	query.addCriteria(Criteria.where("deptNo").is(deptNo));
+> Sending command '{"find": "Employee", "filter": {"deptNo": 30}, "sort": {"sal": -1}, "projection": {"eName": 1, "empNo": 1, "sal": 1}, "$db": "test"}'
+
+>	query.addCriteria(Criteria.where("deptNo").is(deptNo));
 	query.with(Sort.by(Direction.DESC, "sal"));
 	query.fields().include("empNo");
 	query.fields().include("eName");		
 	return mongoTemplate.find(query, Employee.class);
 
 ## @Query style
-> @Query(value = "{deptNo: ?0}", fields = "{empNo:1, eName:1}" )
-	List<Employee> findSortAndSelectFields(int deptNo);
+> @Query(value = "{deptNo: ?0}", sort = "{sal: -1}", fields = "{empNo:1, eName:1, sal:1}" )
+> '{"find": "Employee", "filter": {"deptNo": 30}, "sort": {"sal": -1}, "projection": {"empNo": 1, "eName": 1, "sal": 1}, "$db": "test"}'
 
-> @Query(value = "{deptNo: ?0}", fields = "{eName:1, _id:0}" )
-	List<String> findSortAndSelectOneField(int deptNo);	
-- 1개의 필드만 리턴하게 되면 List<String>일거라 예상했지만 실제로는 fieldName:fieldValue형태로 리턴된다
-- ex) [{"eName": "ALLEN"}, {"eName": "WARD"}, {"eName": "MARTIN"}, {"eName": "BLAKE"}, {"eName": "TURNER"}, {"eName": "JAMES"}]
+
+# select field, sort asc
+- select empNo, eName, sal from Employee where deptNo = 20 order by sal asc
+
+## mongoTemplate style
+>	query.addCriteria(Criteria.where("deptNo").is(deptNo));
+	query.with(Sort.by(Direction.DESC, "sal"));
+	query.fields().include("empNo");
+	query.fields().include("eName");		
+	return mongoTemplate.find(query, Employee.class);
+
+> '{"find": "Employee", "filter": {"deptNo": 30}, "sort": {"sal": 1}, "projection": {"empNo": 1, "eName": 1, "sal": 1}, "$db": "test"}'
+
+## @Query style
+> @Query(value = "{deptNo: ?0}", sort = "{sal: 1}", fields = "{empNo:1, eName:1, sal:1}" )
+> '{"find": "Employee", "filter": {"deptNo": 30}, "sort": {"sal": 1}, "projection": {"empNo": 1, "eName": 1, "sal": 1}, "$db": "test"}'
 
 
 # select field where in
@@ -339,7 +353,7 @@
 
 
 
-#  select .. from Employee where hiredate like '%1999%'
+#  select .. from Employee where hiredate like '1999%'
 ## mongoTemplate style
 > query.addCriteria( Criteria.where("hiredate").regex(year + ".*"));
 > Sending command '{"find": "Employee", "filter": {"hiredate": {"$regex": "19.*"}}, "$db": "test"}'
@@ -348,7 +362,35 @@
 
 
 
+# rownum = 1
+- select * from Employee where rownum = 1
 
+## mongoTemplate style
+> mongoTemplate.findOne(new Query(), Employee.class);
+> Sending command '{"find": "Employee", "limit": 3, "$db": "test"}'
+
+## @Query style1 : 조건 없이 1개만 조회하는 방법은 없음
+> return employeeRepository.findAll().stream().findFirst();
+> List<Employee> findAll();
+
+## @Query style2 : 명명 규칙을 이용해서 하나의 조건을 주고 First, Top을 이용해서 필터링하는 방법
+> Employee findFirstByDeptNo(int deptNo); 
+
+
+
+
+
+
+# limit < 3
+- select * from Employee where limit < 3
+
+## mongoTemplate style
+> mongoTemplate.find(new Query().limit(limit), Employee.class);
+> Sending command '{"find": "Employee", "limit": 3, "$db": "test"}'
+
+## @Query style : 동적으로 limit 개수를 조절할 방법을 못 찾음
+> List<Employee> findFirst5ByDeptNo(int deptNo);
+> Sending command '{"find": "Employee", "filter": {"deptNo": 30}, "limit": 5, "$db": "test"}'
 
 
 

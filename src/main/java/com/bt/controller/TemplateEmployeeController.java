@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -29,6 +30,10 @@ public class TemplateEmployeeController {
 
 	@Autowired
 	private MongoTemplate mongoTemplate;
+	
+	@Autowired
+    private MongoOperations mongoOperations;
+
 	
 	@GetMapping
 	public List<Employee> findAll() {
@@ -150,17 +155,34 @@ public class TemplateEmployeeController {
 	
 	
 	// select empNo, eName, sal from Employee where deptNo = 20 order by sal desc
-	@GetMapping(value = "/sort/{deptNo}")
-	public List<Employee> findsort(@PathVariable int deptNo) {
+	@GetMapping(value = "/sort/desc/{deptNo}")
+	public List<Employee> findSortDesc(@PathVariable int deptNo) {
 		log.info("deptNo={}", deptNo);
-		
 		
 		Query query = new Query();
 		query.addCriteria(Criteria.where("deptNo").is(deptNo));
 		query.with(Sort.by(Direction.DESC, "sal"));
 
 		query.fields().include("empNo");
-		query.fields().include("eName");		
+		query.fields().include("eName");
+		query.fields().include("sal");	
+		
+		return mongoTemplate.find(query, Employee.class);
+		
+	} 
+	
+	// select empNo, eName, sal from Employee where deptNo = 20 order by sal desc
+	@GetMapping(value = "/sort/asc/{deptNo}")
+	public List<Employee> findSortAsc(@PathVariable int deptNo) {
+		log.info("deptNo={}", deptNo);
+		
+		Query query = new Query();
+		query.addCriteria(Criteria.where("deptNo").is(deptNo));
+		query.with(Sort.by(Direction.ASC, "sal"));
+
+		query.fields().include("empNo");
+		query.fields().include("eName");
+		query.fields().include("sal");
 		
 		return mongoTemplate.find(query, Employee.class);
 		
@@ -311,5 +333,19 @@ public class TemplateEmployeeController {
 		Query query = new Query();
 		query.addCriteria( Criteria.where("hiredate").regex(year + ".*"));
 		return mongoTemplate.find(query, Employee.class);
+	}
+	
+	// select .. from Employee where rownum = 1;
+	@GetMapping(value = "/findone")
+	public Employee findOne() {
+		return mongoTemplate.findOne(new Query(), Employee.class);
+	}
+	
+	// select .. from Employee where rownum > 2;
+	@GetMapping(value = "/limit/{limit}")
+	public List<Employee> findLimit(@PathVariable int limit) {
+		log.info("limit={}", limit);
+		return mongoTemplate.find(new Query().limit(limit), Employee.class);
+		
 	}
 }

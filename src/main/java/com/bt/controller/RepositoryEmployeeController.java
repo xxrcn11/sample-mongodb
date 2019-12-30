@@ -1,6 +1,7 @@
 package com.bt.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -95,10 +96,17 @@ public class RepositoryEmployeeController {
 		return employeeRepository.countEmployeeBySalRange(minSal, maxSal);
 	}
 	
-	@GetMapping(value = "/sort/{deptNo}")
-	public List<Employee> findsort(@PathVariable int deptNo) {
+	@GetMapping(value = "/sort/desc/{deptNo}")
+	public List<Employee> findSortDesc(@PathVariable int deptNo) {
 		log.info("deptNo={}", deptNo);
-		return employeeRepository.findSortAndSelectFields(deptNo);
+		return employeeRepository.findSortDesc(deptNo);
+		
+	}
+	
+	@GetMapping(value = "/sort/asc/{deptNo}")
+	public List<Employee> findSortAsc(@PathVariable int deptNo) {
+		log.info("deptNo={}", deptNo);
+		return employeeRepository.findSortAsc(deptNo);
 		
 	} 
 	
@@ -192,7 +200,20 @@ public class RepositoryEmployeeController {
 	public List<Employee> findLikeByHireDateHead(@PathVariable int year) {
 		return employeeRepository.findLikeByHireDateHead(year);
 	}
+
+	// select .. from Employee where rownum = 1;
+	@GetMapping(value = "/findone")
+	public Optional<Employee> findOne() {
+		return employeeRepository.findAll().stream().findFirst();
+	}
 	
+	// select .. from Employee where rownum > 2;
+	@GetMapping(value = "/limit/{deptNo}")
+	public List<Employee> findLimit(@PathVariable int deptNo) {
+		log.info("deptNo={}", deptNo);
+		return employeeRepository.findFirst5ByDeptNo(deptNo);
+		
+	}
 	
 	
 	
